@@ -82,7 +82,7 @@ class AuthFragment : Fragment() {
                 biometryManager.saveUserEnabledBiometry(
                     false
                 )
-                biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED)
+                biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_NO)
                 successLogin()
             }
             .setPositiveButton(
@@ -91,7 +91,7 @@ class AuthFragment : Fragment() {
                 showBiometryForEncryption(user)
             }
             .setNeutralButton(R.string.later) { _, _ ->
-                biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.LATER)
+                biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_YES)
                 successLogin()
                 userClickLater = true
             }.show()
@@ -113,7 +113,7 @@ class AuthFragment : Fragment() {
                 }
                 is BiometryResult.BiometrySuccess -> {
                     biometryManager.saveUserEnabledBiometry(true)
-                    biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED)
+                    biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_YES)
                     successLogin()
                 }
             }

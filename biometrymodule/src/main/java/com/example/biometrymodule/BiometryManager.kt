@@ -115,7 +115,6 @@ class BiometryManager(private val fragmentActivity: FragmentActivity) {
                     }
                 }
             biometricPrompt.cancelAuthentication()
-            biometricPrompt.cancelAuthentication()
             Handler(fragmentActivity.mainLooper).postDelayed({
                 val promptInfo = createPromptInfo(fragmentActivity)
                 biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
