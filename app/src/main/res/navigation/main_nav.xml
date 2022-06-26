@@ -25,5 +25,8 @@
             app:destination="@id/authFragment"
             app:popUpTo="@id/main_nav"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="loginMessage"
+            app:argType="string" />
     </fragment>
 </navigation>

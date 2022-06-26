@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.biometricsample.R
@@ -42,7 +43,7 @@ class AuthFragment : Fragment() {
                     if (it.askAboutBiometry && !userClickLater) {
                         askAboutUseBiometry(it.user)
                     } else {
-                        successLogin()
+                        successLogin("You login via email and pass ${it.user.toString()}")
                     }
                     vm.event.value = Event.None
                 }
@@ -62,8 +63,8 @@ class AuthFragment : Fragment() {
         vm.biometryManager = biometryManager
     }
 
-    private fun successLogin() {
-        navigateToTheContent()
+    private fun successLogin(loginMessage: String) {
+        navigateToTheContent(loginMessage)
     }
 
     override fun onResume() {
@@ -83,7 +84,7 @@ class AuthFragment : Fragment() {
                     false
                 )
                 biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_NO)
-                successLogin()
+                successLogin("You login via email and pass ${user.toString()}")
             }
             .setPositiveButton(
                 R.string.yes
@@ -92,7 +93,7 @@ class AuthFragment : Fragment() {
             }
             .setNeutralButton(R.string.later) { _, _ ->
                 biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_YES)
-                successLogin()
+                successLogin("You login via email and pass ${user.toString()}")
                 userClickLater = true
             }.show()
 
@@ -105,7 +106,7 @@ class AuthFragment : Fragment() {
                     if (result.errCode == BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED) { // here is a bug. When user clicked "later" for different languages we received a different errCodes
                         userClickLater = true
                         biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.LATER)
-                        successLogin()
+                        successLogin("You login via email and pass ${user.toString()}")
                     }
                 }
                 BiometryResult.BiometryFailed -> {
@@ -114,7 +115,7 @@ class AuthFragment : Fragment() {
                 is BiometryResult.BiometrySuccess -> {
                     biometryManager.saveUserEnabledBiometry(true)
                     biometryManager.saveAskAboutBiometry(UserWasAskAboutBiometry.ASKED_YES)
-                    successLogin()
+                    successLogin("You login via email and pass ${user.toString()}")
                 }
             }
 
@@ -134,15 +135,16 @@ class AuthFragment : Fragment() {
                     //do nothing
                 }
                 is BiometryResult.BiometrySuccess -> {
-                    successLogin()
+                    successLogin("You login via biometry. Your token is $token")
+
                 }
             }
 
         }
     }
 
-    private fun navigateToTheContent() {
-        findNavController().navigate(R.id.action_authFragment_to_contentFragment)
+    private fun navigateToTheContent(loginMessage : String) {
+        findNavController().navigate(R.id.action_authFragment_to_contentFragment, bundleOf(Pair("loginMessage", loginMessage)))
     }
 
 }

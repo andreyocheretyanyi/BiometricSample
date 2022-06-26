@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.navigation.fragment.findNavController
 import com.example.biometricsample.R
@@ -25,6 +26,7 @@ class ContentFragment : Fragment() {
         fragmentView.findViewById<AppCompatButton>(R.id.bt_logout).setOnClickListener {
             logout()
         }
+        fragmentView.findViewById<TextView>(R.id.tv_content).setText(arguments?.getString("loginMessage") ?: "")
         return fragmentView
     }
 

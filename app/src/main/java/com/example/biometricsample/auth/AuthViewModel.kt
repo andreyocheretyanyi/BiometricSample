@@ -20,9 +20,6 @@ class AuthViewModel : ViewModel() {
     }
 
     private fun makeLoginRequest(login: String, password: String) {
-        if (biometryManager.getUserEnabledBiometry()) {
-            event.value = Event.LoginViaBiometry
-        } else {
             if (login.isNotEmpty() || password.isNotEmpty()) {
                 val token = java.util.UUID.randomUUID().toString()
                 event.value = Event.SuccessLogin(
@@ -32,7 +29,6 @@ class AuthViewModel : ViewModel() {
             }
         }
 
-    }
 }
 
 sealed class Event {
